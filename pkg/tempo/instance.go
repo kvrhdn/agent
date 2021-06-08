@@ -14,7 +14,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"go.opencensus.io/stats/view"
 	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/config/configmodels"
+	"go.opentelemetry.io/collector/config"
 	"go.opentelemetry.io/collector/service/builder"
 	"go.uber.org/zap"
 )
@@ -197,17 +197,17 @@ func (i *Instance) ReportFatalError(err error) {
 }
 
 // GetFactory implements component.Host
-func (i *Instance) GetFactory(kind component.Kind, componentType configmodels.Type) component.Factory {
+func (i *Instance) GetFactory(kind component.Kind, componentType config.Type) component.Factory {
 	return nil
 }
 
 // GetExtensions implements component.Host
-func (i *Instance) GetExtensions() map[configmodels.Extension]component.ServiceExtension {
+func (i *Instance) GetExtensions() map[config.ComponentID]component.Extension {
 	return nil
 }
 
 // GetExporters implements component.Host
-func (i *Instance) GetExporters() map[configmodels.DataType]map[configmodels.Exporter]component.Exporter {
+func (i *Instance) GetExporters() map[config.DataType]map[config.ComponentID]component.Exporter {
 	// SpanMetricsProcessor needs to get the configured exporters.
 	return i.exporter.ToMapByDataType()
 }
